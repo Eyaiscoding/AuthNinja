@@ -1,6 +1,8 @@
 # AuthNinja
 
-<img src="./assets/authninja-logo.webp" width="200" />
+<p align="center">
+  <img src="./assets/authninja-logo.webp" width="200" />
+</p>
 
 AuthNinja is a robust authentication system implemented in C++ following SOLID principles. It provides secure and efficient authentication using file-based storage, password hashing with SHA-256, and salt for added security.
 
