@@ -1,0 +1,21 @@
+name: AuthNinja CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: sudo apt-get install -y g++ cmake libcrypto++-dev
+      - name: Build
+        run: cmake . && make
+      - name: Run tests
+        run: ./AuthNinjaTests

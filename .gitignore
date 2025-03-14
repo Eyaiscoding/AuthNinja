@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Ignore the cryptopp directory 
+cryptopp/
+
