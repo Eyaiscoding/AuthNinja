@@ -4,8 +4,6 @@
   <img src="./assets/authninja-logo.webp" width="200" />
 </p>
 
-# AuthNinja
-
 AuthNinja is a secure authentication system implemented in C++. The project follows **SOLID principles** to ensure a clean and maintainable codebase.
 
 ## How the Code Respects SOLID Principles
