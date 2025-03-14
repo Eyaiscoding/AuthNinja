@@ -4,38 +4,53 @@
   <img src="./assets/authninja-logo.webp" width="200" />
 </p>
 
-AuthNinja is a robust authentication system implemented in C++ following SOLID principles. It provides secure and efficient authentication using file-based storage, password hashing with SHA-256, and salt for added security.
+AuthNinja is a secure authentication system implemented in C++. The project follows **SOLID principles** to ensure a clean and maintainable codebase.
 
-## Features
-- User registration with salted and hashed passwords
-- User authentication with SHA-256 hashed password verification
-- Follows SOLID design principles
-- Simple console-based user interface
-- Automated testing with GitHub Actions
+## How the Code Respects SOLID Principles
 
-## Installation
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/your-repo/AuthNinja.git
-   ```
-2. Build the project:
-   ```sh
-   make build
-   ```
-3. Run tests:
-   ```sh
-   make test
-   ```
-## Usage
-1. Choose an option from the menu:
-   - `1`: Register a new user
-   - `2`: Log in with an existing user
-   - `3`: Exit the program
-2. Enter a username and password when prompted.
-3. If registration is successful, the credentials are saved securely in `users.txt`.
-4. If logging in, the system will verify the username and password before granting access.
-   
+1. **Single Responsibility Principle (SRP)**:
+   - Each class has a single responsibility:
+     - `Hashing`: Handles password hashing and salt generation.
+     - `FileHandler`: Manages file operations (storing and retrieving user data).
+     - `UserRegistration`: Handles user registration logic.
+     - `UserLogin`: Handles user login logic.
+     - `PasswordVerification`: Handles password verification logic.
+   - This ensures that each class is focused on one task, making the code easier to maintain and extend.
+
+2. **Open/Closed Principle (OCP)**:
+   - The system is open for extension but closed for modification:
+     - New hashing algorithms can be added to the `Hashing` class without modifying existing code.
+     - New file storage formats can be added to the `FileHandler` class without affecting other modules.
+   - This allows the system to evolve without breaking existing functionality.
+
+3. **Liskov Substitution Principle (LSP)**:
+   - Derived classes (e.g., `Hashing`) can be substituted for their base classes without altering the correctness of the program:
+     - If a new hashing algorithm is implemented, it can replace the existing one without affecting other modules.
+   - This ensures that the system remains robust and flexible.
+
+4. **Interface Segregation Principle (ISP)**:
+   - Interfaces are segregated to ensure that classes only implement methods they need:
+     - `Hashing` only provides methods for hashing and salt generation.
+     - `FileHandler` only provides methods for file operations.
+   - This prevents classes from being forced to implement unnecessary methods.
+
+5. **Dependency Inversion Principle (DIP)**:
+   - High-level modules (e.g., `UserRegistration`, `UserLogin`, `PasswordVerification`) depend on abstractions (e.g., `Hashing`, `FileHandler`) rather than concrete implementations:
+     - This allows the system to be more flexible and easier to test, as dependencies can be mocked or replaced.
+
+## How to Run
+
+1. Clone the repository.
+2. Install dependencies (e.g., `g++`, `cmake`, `libcrypto++-dev`).
+3. Build the project using `cmake . && make`.
+4. Run the tests using `./AuthNinjaTests`.
+
+## GitHub Actions
+
+The project includes a GitHub Actions workflow to automate testing on every push or pull request to the `main` branch.
+
 ## Contributors
+
 - Eya Abidi
 - Ines Jabri
 - Ahmed Dhia Dridi
