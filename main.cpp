@@ -35,4 +35,25 @@ class UserRegistration {
             return hasUpper && hasLower && hasDigit && hasSpecial;
         }
     };
+
+int main(){
+
+    UserRegistration registration;
+         registration.registerUser("user1", "password123");
+
+    PasswordVerification verification;
+         if (verification.verifyPassword("user1", "password123")) {
+             std::cout << "Password verification successful!" << std::endl;
+         } else {
+             std::cout << "Password verification failed!" << std::endl;
+         }
+
+    UserLogin login;
+         if (login.loginUser("user1", "Password123")) {
+             std::cout << "Login successful!" << std::endl;
+         } else {
+             std::cout << "Login failed!" << std::endl;
+         }
+return 0
+}
     
