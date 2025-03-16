@@ -3,22 +3,22 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
-#include <cryptopp/sha.h> // Crypto++ library for SHA-256
-#include <cryptopp/hex.h> // Crypto++ library for hex encoding
-#include <cryptopp/osrng.h> // Crypto++ library for random number generation
+#include "sha.h" 
+#include "hex.h" 
+#include "osrng.h" 
 
 class Hashing{
 public:
   static std::string hashPassword(const std::string& password, const std::string& salt){
       CroptoPP::SHA256 hash;
-      byte digest[CrypotoPP::SHA256::DIGESTSIZE];
+      unsigned char digest[CrypotoPP::SHA256::DIGESTSIZE];
       std::string saltedPassword=password + salt;
-      hash.CalculateDigest(digest, reinterpret_cast<const byte*>(saltedPassword.data()),saltedPassword.size());
+      hash.CalculateDigest(digest, reinterpret_cast<const unsigned char*>(saltedPassword.data()),saltedPassword.size());
       return std::string(reinterpret_cast<char*>(digest),CryptoPP::SHA256::DIGESTSIZE);
    }
   static std::string generateSalt(){
     CroptoPP::AutoSeededRamdomPool rng;
-    byte salt[16];
+    unsigned char salt[16];
     rng.GenerateBlock(salt,sizeof (salt));
     return std::string(reinterpret_cast<char*>(salt),sizeof(salt));
   }
@@ -52,6 +52,41 @@ class UserRegistration {
             return hasUpper && hasLower && hasDigit && hasSpecial;
         }
     };
+
+using namespace std;
+class UserLogin {
+public:
+    bool loginUser(const string& username, const string& password) {
+        try {
+            auto userData = FileHandler::retrieveUserData(username);
+            string hashedPassword = Hashing::hashPassword(password, userData.salt);
+
+            if (hashedPassword == userData.hashedPassword) {
+                cout << "Login successful. Welcome, " << username << "!" << "\n";
+                return true;
+            } else {
+                cout << "Incorrect password. Try again." << "\n";
+                return false;
+            }
+        } catch (...) {
+            cout << "Login failed. User not found." << "\n";
+            return false;
+        }
+    }
+
+    void resetPassword(const string& username, const string& newPassword) {
+        if (newPassword.empty()) {
+            cout << "Password cannot be empty." << "\n";
+            return;
+        }
+
+        string newSalt = Hashing::generateSalt();
+        string newHashedPassword = Hashing::hashPassword(newPassword, newSalt);
+        FileHandler::storeUserData(username, newHashedPassword, newSalt);
+
+        cout << "Password reset successfully." << "\n";
+    }
+};
 
 int main(){
 
