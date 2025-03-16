@@ -16,6 +16,13 @@ public:
       hash.CalculateDigest(digest, reinterpret_cast<const byte*>(saltedPassword.data()),saltedPassword.size());
       return std::string(reinterpret_cast<char*>(digest),CryptoPP::SHA256::DIGESTSIZE);
    }
+  static std::string generateSalt(){
+    CroptoPP::AutoSeededRamdomPool rng;
+    byte salt[16];
+    rng.GenerateBlock(salt,sizeof (salt));
+    return std::string(reinterpret_cast<char*>(salt),sizeof(salt));
+  }
+};
 
 class UserRegistration {
     public:
