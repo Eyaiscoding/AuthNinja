@@ -7,6 +7,16 @@
 #include <cryptopp/hex.h> // Crypto++ library for hex encoding
 #include <cryptopp/osrng.h> // Crypto++ library for random number generation
 
+class Hashing{
+public:
+static std::string hashPassword(const std::string& password, const std::string& salt){
+CroptoPP::SHA256 hash;
+byte digest[CrypotoPP::SHA256::DIGESTSIZE];
+std::string saltedPassword=password + salt;
+hash.CalculateDigest(digest, reinterpret_cast<const byte*>(saltedPassword.data()),saltedPassword.size());
+return std::string(reinterpret_cast<char*>(digest),CryptoPP::SHA256::DIGESTSIZE);
+}
+
 class UserRegistration {
     public:
         void registerUser(const std::string& username, const std::string& password) {
