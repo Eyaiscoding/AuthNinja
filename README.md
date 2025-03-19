@@ -1,76 +1,58 @@
-#include <iostream>
-#include <limits>
-#include "UserDatabase.h"  
-#include "Authenticator.h"
-#include "HashingUtility.h" 
+# AuthNinja
 
-void registerUser(UserDatabase& db) {
-    std::string username, password;
-    std::cout << "\n=== User Registration ===\n";
-    std::cout << "Enter username: ";
-    std::cin >> username;
-    std::cout << "Enter password: ";
-    std::cin >> password;
+<p align="center">
+  <img src="./assets/authninja-logo.webp" width="200" />
+</p>
 
-    std::string salt = generateSalt();
-    std::string hashedPassword = hashPassword(password, salt);
+AuthNinja is a secure authentication system implemented in C++. The project follows **SOLID principles** to ensure a clean and maintainable codebase.
 
-    if (db.addUser(username, salt, hashedPassword)) {
-        std::cout << "Registration successful!\n";
-    } else {
-        std::cout << "User already exists.\n";
-    }
-}
+## How the Code Respects SOLID Principles
 
-void loginUser(Authenticator& auth) {
-    std::string username, password;
-    std::cout << "\n=== User Login ===\n";
-    std::cout << "Enter username: ";
-    std::cin >> username;
-    std::cout << "Enter password: ";
-    std::cin >> password;
+1. **Single Responsibility Principle (SRP)**:
+   - Each class has a single responsibility:
+     - `Hashing`: Handles password hashing and salt generation.
+     - `FileHandler`: Manages file operations (storing and retrieving user data).
+     - `UserRegistration`: Handles user registration logic.
+     - `UserLogin`: Handles user login logic.
+     - `PasswordVerification`: Handles password verification logic.
+   - This ensures that each class is focused on one task, making the code easier to maintain and extend.
 
-    if (auth.login(username, password)) {
-        std::cout << "Login successful! Welcome, " << username << "!\n";
-    } else {
-        std::cout << "Login failed. Incorrect username or password.\n";
-    }
-}
+2. **Open/Closed Principle (OCP)**:
+   - The system is open for extension but closed for modification:
+     - New hashing algorithms can be added to the `Hashing` class without modifying existing code.
+     - New file storage formats can be added to the `FileHandler` class without affecting other modules.
+   - This allows the system to evolve without breaking existing functionality.
 
-void displayMenu() {
-    std::cout << "\n===== Authentication System =====\n";
-    std::cout << "1. Register\n";
-    std::cout << "2. Login\n";
-    std::cout << "3. Exit\n";
-    std::cout << "Choose an option: ";
-}
+3. **Liskov Substitution Principle (LSP)**:
+   - Derived classes (e.g., `Hashing`) can be substituted for their base classes without altering the correctness of the program:
+     - If a new hashing algorithm is implemented, it can replace the existing one without affecting other modules.
+   - This ensures that the system remains robust and flexible.
 
-int main() {
-    UserDatabase db;
-    Authenticator auth(db);
+4. **Interface Segregation Principle (ISP)**:
+   - Interfaces are segregated to ensure that classes only implement methods they need:
+     - `Hashing` only provides methods for hashing and salt generation.
+     - `FileHandler` only provides methods for file operations.
+   - This prevents classes from being forced to implement unnecessary methods.
 
-    int choice;
-    while (true) {
-        displayMenu();
-        while (!(std::cin >> choice)) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Invalid input. Please enter a number: ";
-        }
+5. **Dependency Inversion Principle (DIP)**:
+   - High-level modules (e.g., `UserRegistration`, `UserLogin`, `PasswordVerification`) depend on abstractions (e.g., `Hashing`, `FileHandler`) rather than concrete implementations:
+     - This allows the system to be more flexible and easier to test, as dependencies can be mocked or replaced.
 
-        switch (choice) {
-            case 1:
-                registerUser(db);
-                break;
-            case 2:
-                loginUser(auth);
-                break;
-            case 3:
-                std::cout << "Exiting the program. Goodbye!\n";
-                return 0;
-            default:
-                std::cout << "Invalid option. Please try again.\n";
-        }
-    }
-}
- ***
+## How to Run
+
+1. Clone the repository.
+2. Install dependencies (e.g., `g++`, `cmake`, `libcrypto++-dev`).
+3. Build the project using `cmake . && make`.
+4. Run the tests using `./AuthNinjaTests`.
+
+## GitHub Actions
+
+The project includes a GitHub Actions workflow to automate testing on every push or pull request to the `main` branch.
+
+## Contributors
+
+- Eya Abidi
+- Ines Jabri
+- Ahmed Dhia Dridi
+- Amina Jebari
+- Mohamed Yessine Aifa
