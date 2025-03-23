@@ -40,10 +40,27 @@ AuthNinja is a secure authentication system implemented in C++. The project foll
 
 ## How to Run
 
+### Requirements
+This code is designed to run on **Microsoft Visual Studio**. Follow these steps to set up and run the application:
+
 1. Clone the repository.
-2. Install dependencies (e.g., `g++`, `cmake`, `libcrypto++-dev`).
-3. Build the project using `cmake . && make`.
-4. Run the tests using `./AuthNinjaTests`.
+2. Clone the Crypto++ library:
+   ```sh
+   git clone https://github.com/weidai11/cryptopp
+   ```
+3. Open the `cryptlib.vcxproj` file in **Microsoft Visual Studio**.
+4. Select the `cryptlib` solution with the **Release** option and build it.
+5. Once the build is successful, locate the `cryptlib.lib` file under `cryptopp\x64\Output\Release`.
+6. Copy the **AuthNinja** code into a new **Microsoft Visual Studio C++ project**.
+7. Open **Solution Explorer**, right-click on the project, and open **Properties**.
+8. Configure the project as follows:
+   - Select **All Configurations** and **All Platforms** at the top bar.
+   - Under **C/C++ > General**, set **Additional Include Directories** to the path of the `cryptopp` directory.
+   - Under **Linker > General**, set **Additional Library Directories** to `cryptopp\x64\Output\Release`.
+   - Under **Linker > Input**, add `cryptlib.lib` to **Additional Dependencies**.
+   - Under **C/C++ > Code Generation**, set **Runtime Library** to **Multi-threaded**.
+9. Click **Apply**, then **OK**.
+10. Select the **Release** option and run the application.
 
 ## GitHub Actions
 
@@ -56,3 +73,5 @@ The project includes a GitHub Actions workflow to automate testing on every push
 - Ahmed Dhia Dridi
 - Amina Jebari
 - Mohamed Yessine Aifa
+
+
